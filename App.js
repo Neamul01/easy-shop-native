@@ -1,12 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import ProductsContainer from "./Screens/Products/ProductsContainer";
+import Header from "./Shared/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Header />
       <ProductsContainer />
-    </View>
+    </SafeAreaView>
   );
 }
 
