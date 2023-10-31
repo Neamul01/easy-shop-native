@@ -12,7 +12,7 @@ const SearchedProducts = ({ filteredProducts }) => {
               source={{
                 uri: item.image
                   ? item.image
-                  : "https://m.media-amazon.com/images/I/81PtF30TLUL._AC_UY1100_.jpg",
+                  : "https://freepngimg.com/thumb/bag/130644-bag-backpack-free-download-image.png",
               }}
             />
             <ListItem.Content>

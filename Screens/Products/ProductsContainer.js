@@ -13,15 +13,28 @@ const ProductsContainer = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredProduct, setFilteredProduct] = useState([]);
-
-  const updateSearch = (search) => {
-    setSearch(search);
-  };
+  const [focus, setFocus] = useState(false);
 
   useEffect(() => {
     setProducts(data);
     setFilteredProduct(data);
   }, []);
+
+  const searchProduct = (text) => {
+    openList();
+    setSearch(text);
+    setFilteredProduct(
+      products.filter((i) => i.name.toLowerCase().includes(text.toLowerCase()))
+    );
+  };
+
+  const openList = () => {
+    setFocus(true);
+  };
+
+  const onBlur = () => {
+    setFocus(false);
+  };
 
   return (
     <View style={{ marginTop: 10, width: width }}>
@@ -31,16 +44,25 @@ const ProductsContainer = () => {
         inputStyle={{ color: "white" }}
         containerStyle={styles.searchBarContainer}
         inputContainerStyle={styles.searchBarInputContainer}
+        clearButtonMode="unless-editing"
         placeholder="Type Here..."
-        onChangeText={updateSearch}
+        onBlur={onBlur}
+        onChangeText={searchProduct}
         value={search}
+        onClear={() => {
+          setFocus(false);
+        }}
       />
-      <FlatList
-        data={products}
-        numColumns={2}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => <ProductList key={item.id} item={item} />}
-      />
+      {focus ? (
+        <SearchedProducts filteredProducts={filteredProduct} />
+      ) : (
+        <FlatList
+          data={products}
+          numColumns={2}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => <ProductList key={item.id} item={item} />}
+        />
+      )}
     </View>
   );
 };
@@ -56,7 +78,7 @@ const styles = StyleSheet.create({
     shadowColor: "black",
   },
   searchBarInputContainer: {
-    backgroundColor: "gray",
+    backgroundColor: "#5c615d",
     color: "white",
   },
 });

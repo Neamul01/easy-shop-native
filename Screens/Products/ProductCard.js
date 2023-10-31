@@ -20,7 +20,7 @@ const ProductCard = (props) => {
         source={{
           uri: image
             ? image
-            : "https://m.media-amazon.com/images/I/81PtF30TLUL._AC_UY1100_.jpg",
+            : "https://freepngimg.com/thumb/bag/130644-bag-backpack-free-download-image.png",
         }}
         alt="product"
       />
