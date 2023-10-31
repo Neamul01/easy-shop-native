@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 8,
     backgroundColor: "white",
+    position: "relative",
   },
   image: {
     width: width / 2 - 20 - 10,
