@@ -1,11 +1,12 @@
 import {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearCart,
@@ -14,16 +15,26 @@ import {
 } from "../../Redux/features/cart/cartSlice";
 import { Avatar, Button, ListItem } from "@rneui/themed";
 import Entypo from "react-native-vector-icons/Entypo";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+const { height, width } = Dimensions.get("window");
 
 const Cart = (props) => {
   const cart = useSelector(selectCart);
   const dispatch = useDispatch();
-  // console.log(cart);
+  const navigator = useNavigation();
+
+  const total = cart
+    .reduce((acc, product) => {
+      return acc + Number(product.price) * Number(product.quantity);
+    }, 0)
+    .toFixed(2);
+
   return (
     <View>
       {cart.length > 0 ? (
         <>
-          <ScrollView>
+          <ScrollView style={{ height: height - 110 }}>
             {cart.map((product) => {
               return (
                 <ListItem key={product._id.$oid} bottomDivider>
@@ -40,8 +51,21 @@ const Cart = (props) => {
                     <ListItem.Subtitle>{product.brand}</ListItem.Subtitle>
                   </ListItem.Content>
                   <View style={styles.cartControlContainer}>
+                    <Text
+                      style={[
+                        styles.productQuantity,
+                        {
+                          fontWeight: "bold",
+                          marginRight: 5,
+                          height: "100%",
+                          justifyContent: "center",
+                        },
+                      ]}
+                    >
+                      ${product.price}
+                    </Text>
                     <Text style={styles.productQuantity}>
-                      {product.quantity}
+                      Qty-{product.quantity}
                     </Text>
                     <TouchableOpacity
                       style={{ padding: 10 }}
@@ -54,7 +78,13 @@ const Cart = (props) => {
               );
             })}
           </ScrollView>
-          <View style={{ marginTop: "auto" }}>
+          <View style={styles.bottomContainer}>
+            <Text style={styles.priceText}>${total}</Text>
+            <Button
+              onPress={() => navigator.navigate("Checkout")}
+              title={"Checkout"}
+              color={"success"}
+            />
             <Button
               onPress={() => dispatch(clearCart())}
               title={"Clear Cart"}
@@ -92,5 +122,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     backgroundColor: "#f3e1f9",
+  },
+  bottomContainer: {
+    width,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingHorizontal: 10,
+  },
+  priceText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

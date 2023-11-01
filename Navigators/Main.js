@@ -43,11 +43,17 @@ const Main = () => {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <>
-              <Badge
-                value={cart.length}
-                status="error"
-                containerStyle={{ position: "absolute", top: 0, left: "55%" }}
-              />
+              {cart.length > 0 && (
+                <Badge
+                  value={cart.length}
+                  status="error"
+                  containerStyle={{
+                    position: "absolute",
+                    top: 0,
+                    left: "55%",
+                  }}
+                />
+              )}
               <Icon name="shopping-cart" color={color} size={30} />
             </>
           ),
