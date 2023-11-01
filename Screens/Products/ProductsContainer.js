@@ -15,10 +15,11 @@ import Banner from "../../Shared/Banner";
 import data from "../../assets/data/products.json";
 import productCategories from "../../assets/data/categories.json";
 import CategoryFilter from "./CategoryFilter";
+import { useFocusEffect } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
-const ProductsContainer = () => {
+const ProductsContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredProduct, setFilteredProduct] = useState([]);
@@ -37,6 +38,25 @@ const ProductsContainer = () => {
     setInitialState(data);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("blur", () => {
+      setFocus(false);
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Function to handle onBlur effect when the screen gains focus
+      setFocus(false);
+      setSearch("");
+
+      return () => {
+        // Cleanup function if needed when the screen loses focus
+      };
+    }, [])
+  );
   const searchProduct = (text) => {
     openList();
     setSearch(text);
@@ -78,7 +98,8 @@ const ProductsContainer = () => {
           inputContainerStyle={styles.searchBarInputContainer}
           clearButtonMode="unless-editing"
           placeholder="Type Here..."
-          onBlur={onBlur}
+          // onBlur={onBlur}
+
           onChangeText={searchProduct}
           value={search}
           onClear={() => {
@@ -87,7 +108,10 @@ const ProductsContainer = () => {
         />
 
         {focus ? (
-          <SearchedProducts filteredProducts={filteredProduct} />
+          <SearchedProducts
+            navigation={props.navigation}
+            filteredProducts={filteredProduct}
+          />
         ) : (
           <View>
             <View>
@@ -105,18 +129,16 @@ const ProductsContainer = () => {
             {productsCtg.length > 0 ? (
               <View style={styles.listContainer}>
                 {productsCtg.map((item) => {
-                  return <ProductList key={item._id.$oid} item={item} />;
+                  return (
+                    <ProductList
+                      navigation={props.navigation}
+                      key={item._id.$oid}
+                      item={item}
+                    />
+                  );
                 })}
               </View>
             ) : (
-              // <FlatList
-              //   data={products}
-              //   numColumns={2}
-              //   keyExtractor={(item) => item.name}
-              //   renderItem={({ item }) => (
-              //     <ProductList key={item.id} item={item} />
-              //   )}
-              // />
               <View
                 style={{
                   height: "40%",

@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Avatar, ListItem } from "@rneui/themed";
 
-const SearchedProducts = ({ filteredProducts }) => {
+const SearchedProducts = ({ filteredProducts, navigation }) => {
   return (
     <View>
       {filteredProducts.length > 0 ? (
         filteredProducts.map((item, i) => (
-          <ListItem key={i} bottomDivider>
+          <ListItem
+            key={i}
+            bottomDivider
+            onPress={() => navigation.navigate("SingleProduct", { item: item })}
+            // onPress={() => console.log("listPress")}
+          >
+            {/* <TouchableOpacity onPress={() => console.log("listPress")}> */}
             <Avatar
               source={{
                 uri: item.image
@@ -19,6 +25,7 @@ const SearchedProducts = ({ filteredProducts }) => {
               <ListItem.Title>{item.name}</ListItem.Title>
               <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
             </ListItem.Content>
+            {/* </TouchableOpacity> */}
           </ListItem>
         ))
       ) : (

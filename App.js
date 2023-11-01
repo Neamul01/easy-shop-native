@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
-import ProductsContainer from "./Screens/Products/ProductsContainer";
+import "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
 import Header from "./Shared/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { NavigationContainer } from "@react-navigation/native";
+import Main from "./Navigators/Main";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <Header />
-      <ProductsContainer />
-    </SafeAreaView>
+    <NavigationContainer>
+      <SafeAreaView style={styles.container}>
+        <Header />
+        <Main />
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 
@@ -16,9 +20,6 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: "100%",
-    // flex: 1,
     backgroundColor: "#dee3e0",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });
