@@ -5,14 +5,16 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
+  Text,
 } from "react-native";
 import ProductList from "./ProductList";
 import { SearchBar } from "@rneui/themed";
-
-import data from "../../assets/data/products.json";
 import SearchedProducts from "./SearchedProducts";
 import Banner from "../../Shared/Banner";
-// import { Container, Header } from "native-base";
+
+import data from "../../assets/data/products.json";
+import productCategories from "../../assets/data/categories.json";
+import CategoryFilter from "./CategoryFilter";
 
 const { width } = Dimensions.get("window");
 
@@ -21,10 +23,18 @@ const ProductsContainer = () => {
   const [search, setSearch] = useState("");
   const [filteredProduct, setFilteredProduct] = useState([]);
   const [focus, setFocus] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [productsCtg, setProductsCtg] = useState([]);
+  const [active, setActive] = useState();
+  const [initialState, setInitialState] = useState([]);
 
   useEffect(() => {
     setProducts(data);
     setFilteredProduct(data);
+    setCategories(productCategories);
+    setProductsCtg(data);
+    setActive(-1);
+    setInitialState(data);
   }, []);
 
   const searchProduct = (text) => {
@@ -41,6 +51,20 @@ const ProductsContainer = () => {
 
   const onBlur = () => {
     setFocus(false);
+  };
+
+  // ---- categories
+  const changeCtg = (ctg) => {
+    {
+      ctg === "all"
+        ? [setProductsCtg(initialState), setActive(true)]
+        : [
+            setProductsCtg(
+              products.filter((i) => i.category.$oid === ctg),
+              setActive(true)
+            ),
+          ];
+    }
   };
 
   return (
@@ -69,14 +93,40 @@ const ProductsContainer = () => {
             <View>
               <Banner />
             </View>
-            <FlatList
-              data={products}
-              numColumns={2}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <ProductList key={item.id} item={item} />
-              )}
-            />
+            <View>
+              <CategoryFilter
+                categories={categories}
+                CategoryFilter={changeCtg}
+                productsCtg={productsCtg}
+                active={active}
+                setActive={setActive}
+              />
+            </View>
+            {productsCtg.length > 0 ? (
+              <View style={styles.listContainer}>
+                {productsCtg.map((item) => {
+                  return <ProductList key={item._id.$oid} item={item} />;
+                })}
+              </View>
+            ) : (
+              // <FlatList
+              //   data={products}
+              //   numColumns={2}
+              //   keyExtractor={(item) => item.name}
+              //   renderItem={({ item }) => (
+              //     <ProductList key={item.id} item={item} />
+              //   )}
+              // />
+              <View
+                style={{
+                  height: "40%",
+                  marginTop: 20,
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>No Products found</Text>
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -87,6 +137,13 @@ const ProductsContainer = () => {
 export default ProductsContainer;
 
 const styles = StyleSheet.create({
+  listContainer: {
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+  },
   searchBarContainer: {
     backgroundColor: "transparent",
     borderBottomWidth: 0,
