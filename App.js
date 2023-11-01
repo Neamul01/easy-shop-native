@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import Main from "./Navigators/Main";
 import { Provider } from "react-redux";
-import store from "./Redux/store";
+import { store } from "./Redux/app/store";
 
 export default function App() {
   return (

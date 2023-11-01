@@ -2,11 +2,15 @@ import { Image, ScrollView, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Button, ButtonGroup, Text } from "@rneui/themed";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/features/cart/cartSlice";
 
 const SingleProduct = () => {
   const router = useRoute();
   const [item, setItem] = useState(router.params.item);
   const [availability, setAvailability] = useState("");
+
+  const dispatch = useDispatch();
 
   //   console.log(item.image);
 
@@ -40,6 +44,7 @@ const SingleProduct = () => {
           title={"Add"}
           type="clear"
           size="lg"
+          onPress={() => dispatch(addToCart(item))}
         />
       </View>
     </View>

@@ -2,12 +2,16 @@ import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
-import ProductsContainer from "../Screens/Products/ProductsContainer";
 import HomeNavigator from "./HomeNavigator";
+import CartNavigator from "./CartNavigator";
+import { useSelector } from "react-redux";
+import { selectCart } from "../Redux/features/cart/cartSlice";
+import { Badge } from "@rneui/themed";
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
+  const cart = useSelector(selectCart);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -33,11 +37,19 @@ const Main = () => {
         }}
       />
       <Tab.Screen
-        name="Cart"
-        component={HomeNavigator}
+        name="CartScreen"
+        component={CartNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Icon name="shopping-cart" color={color} size={30} />
+            <>
+              <Badge
+                value={cart.length}
+                status="error"
+                containerStyle={{ position: "absolute", top: 0, left: "55%" }}
+              />
+              <Icon name="shopping-cart" color={color} size={30} />
+            </>
           ),
         }}
       />
