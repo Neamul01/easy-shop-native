@@ -81,14 +81,14 @@ const Cart = (props) => {
           <View style={styles.bottomContainer}>
             <Text style={styles.priceText}>${total}</Text>
             <Button
-              onPress={() => navigator.navigate("Checkout")}
-              title={"Checkout"}
-              color={"success"}
-            />
-            <Button
               onPress={() => dispatch(clearCart())}
               title={"Clear Cart"}
               color={"error"}
+            />
+            <Button
+              onPress={() => navigator.navigate("Checkout")}
+              title={"Checkout"}
+              color={"success"}
             />
           </View>
         </>
