@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
-  FlatList,
   Dimensions,
   StyleSheet,
   ScrollView,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import ProductList from "./ProductList";
 import { SearchBar } from "@rneui/themed";
 import SearchedProducts from "./SearchedProducts";
 import Banner from "../../Shared/Banner";
 
-// import data from "../../assets/data/products.json";
-import productCategories from "../../assets/data/categories.json";
 import CategoryFilter from "./CategoryFilter";
 import { useFocusEffect } from "@react-navigation/native";
 import { useGetProductsQuery } from "../../Redux/features/productsApi";
@@ -31,26 +29,31 @@ const ProductsContainer = (props) => {
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
   const { data, isLoading } = useGetProductsQuery();
-  const { data: categoriesData } = useGetCategoriesQuery();
+  const { data: categoriesData, isLoading: categoryIsLoading } =
+    useGetCategoriesQuery();
 
-  useEffect(() => {
-    if (data) {
-      setProducts(data);
-      setFilteredProduct(data);
-      setCategories(categoriesData);
-      setProductsCtg(data);
-      setActive(-1);
-      setInitialState(data);
-    }
-  }, [data, categoriesData]);
+  useFocusEffect(
+    useCallback(() => {
+      if (data) {
+        setProducts(data);
+        setFilteredProduct(data);
+        setCategories(categoriesData);
+        setProductsCtg(data);
+        setActive(-1);
+        setInitialState(data);
+      }
+    }, [data, categoriesData])
+  );
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener("blur", () => {
-      setFocus(false);
-    });
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = props.navigation.addListener("blur", () => {
+        setFocus(false);
+      });
 
-    return unsubscribe;
-  }, [props.navigation]);
+      return unsubscribe;
+    }, [props.navigation])
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -153,7 +156,11 @@ const ProductsContainer = (props) => {
                   alignItems: "center",
                 }}
               >
-                <Text style={{ fontSize: 16 }}>No Products found</Text>
+                {isLoading || categoryIsLoading ? (
+                  <ActivityIndicator size={"large"} color={"red"} />
+                ) : (
+                  <Text style={{ fontSize: 16 }}>No Products found</Text>
+                )}
               </View>
             )}
           </View>
