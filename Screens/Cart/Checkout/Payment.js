@@ -22,7 +22,7 @@ export default function Payment(props) {
   const [open, setOpen] = useState(false);
   const router = useRoute();
 
-  const order = props.route.params;
+  const order = router.params;
 
   const navigation = useNavigation();
 

@@ -50,7 +50,7 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    setOrderItems(cartItems.length);
+    setOrderItems(cartItems);
   }, []);
 
   return (
