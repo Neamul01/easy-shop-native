@@ -1,21 +1,26 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import MMKV from "react-native-mmkv-storage";
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://sedebe3623-001-site1.ctempurl.com/api/",
+    baseUrl: "https://easy-pink-bandicoot-gear.cyclic.app/api/v1",
     credentials: "include",
-    prepareHeaders: (headers) => {
-      let tokenString = localStorage.getItem("result");
-      // debugger;
-      if (tokenString !== null) {
-        let token = JSON.parse(tokenString).result;
-        headers.set("Authorization", `Bearer ${token}`);
-      }
+    prepareHeaders: async (headers) => {
+      try {
+        const token = await MMKV.getStringAsync("token");
 
-      return headers;
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+
+        return headers;
+      } catch (error) {
+        console.error("Error retrieving token from MMKV:", error);
+        return headers;
+      }
     },
   }),
-  tagTypes: [],
+  tagTypes: ["users"],
   endpoints: (builder) => ({}),
 });
