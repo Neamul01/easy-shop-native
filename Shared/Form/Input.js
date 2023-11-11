@@ -11,6 +11,7 @@ export default function Input(props) {
       value={props.value}
       autoCorrect={props.autoCorrect}
       onChange={props.onChange}
+      onChangeText={props.onChangeText}
       onFocus={props.onFocus}
       secureTextEntry={props.secureTextEntry}
       keyboardType={props.keyboardType}

@@ -46,7 +46,7 @@ const Checkout = () => {
       zip,
     };
 
-    navigator.navigate("Payment", { order: order });
+    navigator.navigate("Payment", { order });
   };
 
   useEffect(() => {
