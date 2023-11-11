@@ -12,10 +12,12 @@ import { SearchBar } from "@rneui/themed";
 import SearchedProducts from "./SearchedProducts";
 import Banner from "../../Shared/Banner";
 
-import data from "../../assets/data/products.json";
+// import data from "../../assets/data/products.json";
 import productCategories from "../../assets/data/categories.json";
 import CategoryFilter from "./CategoryFilter";
 import { useFocusEffect } from "@react-navigation/native";
+import { useGetProductsQuery } from "../../Redux/features/productsApi";
+import { useGetCategoriesQuery } from "../../Redux/features/categoryApi";
 
 const { width } = Dimensions.get("window");
 
@@ -28,15 +30,19 @@ const ProductsContainer = (props) => {
   const [productsCtg, setProductsCtg] = useState([]);
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
+  const { data, isLoading } = useGetProductsQuery();
+  const { data: categoriesData } = useGetCategoriesQuery();
 
   useEffect(() => {
-    setProducts(data);
-    setFilteredProduct(data);
-    setCategories(productCategories);
-    setProductsCtg(data);
-    setActive(-1);
-    setInitialState(data);
-  }, []);
+    if (data) {
+      setProducts(data);
+      setFilteredProduct(data);
+      setCategories(categoriesData);
+      setProductsCtg(data);
+      setActive(-1);
+      setInitialState(data);
+    }
+  }, [data, categoriesData]);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("blur", () => {
@@ -75,12 +81,13 @@ const ProductsContainer = (props) => {
 
   // ---- categories
   const changeCtg = (ctg) => {
+    // console.log(products.filter((i) => console.log(i.category.id)));
     {
       ctg === "all"
         ? [setProductsCtg(initialState), setActive(true)]
         : [
             setProductsCtg(
-              products.filter((i) => i.category.$oid === ctg),
+              products.filter((i) => i.category.id === ctg),
               setActive(true)
             ),
           ];
@@ -128,11 +135,11 @@ const ProductsContainer = (props) => {
             </View>
             {productsCtg.length > 0 ? (
               <View style={styles.listContainer}>
-                {productsCtg.map((item) => {
+                {productsCtg.map((item, i) => {
                   return (
                     <ProductList
                       navigation={props.navigation}
-                      key={item._id.$oid}
+                      key={item._id}
                       item={item}
                     />
                   );

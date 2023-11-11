@@ -1,4 +1,4 @@
-import { apiSlice } from "../api/apiSlice";
+import { apiSlice } from "./api/apiSlice";
 
 const productsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -49,7 +49,7 @@ const productsApi = apiSlice.injectEndpoints({
     }),
 
     // ------upload gallery image
-    updateProduct: builder.mutation({
+    uploadProductGallery: builder.mutation({
       query: ({ data, id }) => ({
         url: `/products/gallery-images/${id}`,
         method: "PUT",
@@ -61,9 +61,12 @@ const productsApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetUsersQuery,
-  useGetSingleUserQuery,
-  useGetUserCountQuery,
-  useAddUserMutation,
-  useDeleteUserMutation,
+  useGetProductsQuery,
+  useGetSingleProductQuery,
+  useAddProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useGetProductsCountQuery,
+  useGetFeaturedProductsQuery,
+  useUploadProductGalleryMutation,
 } = productsApi;
