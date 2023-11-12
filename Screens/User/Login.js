@@ -1,13 +1,14 @@
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import FormContainer from "../../Shared/Form/FormContainer";
 import Input from "../../Shared/Form/Input";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Error from "../../Shared/Error";
 import { useSignInMutation } from "../../Redux/features/auth/authApi";
 import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUser } from "../../helpers/userFunctions";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -44,15 +45,14 @@ export default function Login() {
     }
   }, [isError, loginError, isSuccess, data]);
 
-  const fetchData = async () => {
-    const token = await AsyncStorage.getItem("token");
-    if (token) {
-      navigation.navigate("UserProfile");
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useFocusEffect(
+    useCallback(() => {
+      const user = getUser();
+      if (user) {
+        navigation.navigate("UserProfile");
+      }
+    }, [])
+  );
 
   return (
     <FormContainer title={"Login"}>
