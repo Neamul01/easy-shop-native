@@ -4,6 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import { Button, ButtonGroup, Text } from "@rneui/themed";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/features/cart/cartSlice";
+import Toast from "react-native-toast-message";
 
 const SingleProduct = () => {
   const router = useRoute();
@@ -44,7 +45,14 @@ const SingleProduct = () => {
           title={"Add"}
           type="clear"
           size="lg"
-          onPress={() => dispatch(addToCart(item))}
+          onPress={() => {
+            dispatch(addToCart(item));
+            Toast.show({
+              type: "success",
+              text1: `${item.name} added to the cart`,
+              text2: "Go to cart to complete order",
+            });
+          }}
         />
       </View>
     </View>
