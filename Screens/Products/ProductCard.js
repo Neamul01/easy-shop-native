@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCart } from "../../Redux/features/cart/cartSlice";
+import Toast from "react-native-toast-message";
 
 const { width } = Dimensions.get("window");
 
@@ -44,6 +45,11 @@ const ProductCard = (props) => {
             color={"green"}
             onPress={() => {
               dispatch(addToCart(props));
+              Toast.show({
+                type: "success",
+                text1: `${name} added to the cart`,
+                text2: "Go to cart to complete order",
+              });
             }}
           />
         </View>

@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Main from "./Navigators/Main";
 import { Provider } from "react-redux";
 import { store } from "./Redux/app/store";
+import Toast from "react-native-toast-message";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <SafeAreaView style={styles.container}>
           <Header />
           <Main />
+          <Toast topOffset={60} />
         </SafeAreaView>
       </NavigationContainer>
     </Provider>

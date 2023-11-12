@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
 import { useSignUpMutation } from "../../Redux/features/auth/authApi";
+import Toast from "react-native-toast-message";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -40,9 +41,18 @@ export default function Register() {
   useEffect(() => {
     if (registerError || isError) {
       console.log(registerError);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Check your credentials and try again",
+      });
     }
     if (isSuccess) {
-      // console.log("register success", data);
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Please Login",
+      });
       navigation.navigate("Login");
     }
   }, [isError, registerError, isSuccess, data]);

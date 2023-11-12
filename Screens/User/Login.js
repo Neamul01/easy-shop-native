@@ -5,6 +5,7 @@ import Input from "../../Shared/Form/Input";
 import { useNavigation } from "@react-navigation/native";
 import Error from "../../Shared/Error";
 import { useSignInMutation } from "../../Redux/features/auth/authApi";
+import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,11 @@ export default function Login() {
       console.log(loginError);
     }
     if (isSuccess) {
-      // console.log("register success", data);
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Login Success",
+      });
       // navigation.navigate("Login");
     }
   }, [isError, loginError, isSuccess, data]);

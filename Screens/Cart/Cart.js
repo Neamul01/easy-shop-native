@@ -37,7 +37,7 @@ const Cart = (props) => {
           <ScrollView style={{ height: height - 110 }}>
             {cart.map((product) => {
               return (
-                <ListItem key={product._id.$oid} bottomDivider>
+                <ListItem key={product._id} bottomDivider>
                   <Avatar
                     rounded
                     source={{
