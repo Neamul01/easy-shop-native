@@ -138,7 +138,7 @@ const ProductsContainer = (props) => {
             </View>
             {productsCtg.length > 0 ? (
               <View style={styles.listContainer}>
-                {productsCtg.map((item, i) => {
+                {productsCtg?.map((item, i) => {
                   return (
                     <ProductList
                       navigation={props.navigation}

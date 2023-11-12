@@ -1,6 +1,5 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiSlice } from "../api/apiSlice";
-import MMKV from "react-native-mmkv-storage";
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,14 +9,12 @@ const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      async onQueryStarted(_, { dispatch }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           // onSuccess side-effect
           const token = data.token;
-
-          MMKV.set("token", token);
-
+          await AsyncStorage.setItem("token", token);
           //   dispatch(setToken())
         } catch (err) {
           // `onError` side-effect
@@ -31,18 +28,20 @@ const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      async onQueryStarted(_, { dispatch }) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           // onsuccess side-effect
           const token = data.token;
-          MMKV.set("token", token);
+          await AsyncStorage.setItem("token", token);
+          console.log("token", data);
         } catch (err) {
           console.log("error", err);
         }
       },
     }),
   }),
+  overrideExisting: true,
 });
 
 export const { useSignInMutation, useSignUpMutation } = authApi;

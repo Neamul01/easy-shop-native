@@ -1,15 +1,18 @@
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormContainer from "../../Shared/Form/FormContainer";
 import Input from "../../Shared/Form/Input";
 import { useNavigation } from "@react-navigation/native";
 import Error from "../../Shared/Error";
+import { useSignInMutation } from "../../Redux/features/auth/authApi";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigation = useNavigation();
+  const [logIn, { isError, isLoading, isSuccess, error: loginError, data }] =
+    useSignInMutation();
 
   const handleLogin = () => {
     const user = {
@@ -20,9 +23,20 @@ export default function Login() {
       setError("Please fill your credentials");
     } else {
       setError("");
-      console.log("success");
+      logIn(user);
     }
   };
+
+  useEffect(() => {
+    if (loginError || isError) {
+      console.log(loginError);
+    }
+    if (isSuccess) {
+      // console.log("register success", data);
+      // navigation.navigate("Login");
+    }
+  }, [isError, loginError, isSuccess, data]);
+
   return (
     <FormContainer title={"Login"}>
       <Input
@@ -62,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   middleText: {
-    marginBottom: 20,
+    marginBottom: 5,
     alignSelf: "center",
   },
 });

@@ -40,7 +40,7 @@ const CategoryFilter = ({
             }}
           />
         </TouchableOpacity>
-        {categories.map((item) => {
+        {categories?.map((item) => {
           return (
             <TouchableOpacity
               key={item._id}
