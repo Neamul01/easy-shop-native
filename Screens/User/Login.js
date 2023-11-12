@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FormContainer from "../../Shared/Form/FormContainer";
 import Input from "../../Shared/Form/Input";
 import { useNavigation } from "@react-navigation/native";
+import Error from "../../Shared/Error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,6 +19,7 @@ export default function Login() {
     if (email === "" || password === "") {
       setError("Please fill your credentials");
     } else {
+      setError("");
       console.log("success");
     }
   };
@@ -39,6 +41,7 @@ export default function Login() {
         secureTextEntry={true}
       />
       <View style={styles.buttonGroup}>
+        {error ? <Error message={error} /> : null}
         <Button title="Login" onPress={handleLogin} />
       </View>
       <View style={[styles.buttonGroup, { marginTop: 40 }]}>
