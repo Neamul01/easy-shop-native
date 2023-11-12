@@ -8,11 +8,17 @@ const usersApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["users"],
     }),
-    getSingleUser: builder.query({
+    // getSingleUser: builder.query({
+    //   query: (id) => ({
+    //     url: `/users/${id}`,
+    //   }),
+    //   providesTags: ["users"],
+    // }),
+    singleUser: builder.mutation({
       query: (id) => ({
         url: `/users/${id}`,
+        method: "GET",
       }),
-      providesTags: ["users"],
     }),
     addUser: builder.mutation({
       query: (data) => ({
@@ -39,7 +45,8 @@ const usersApi = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
-  useGetSingleUserQuery,
+  // useGetSingleUserQuery,
+  useSingleUserMutation,
   useGetUserCountQuery,
   useAddUserMutation,
   useDeleteUserMutation,

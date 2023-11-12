@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiSlice } from "../api/apiSlice";
 import base64 from "react-native-base64";
 import { setUser } from "./authSlice";
+import { jwtDecode } from "jwt-decode";
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,21 +18,23 @@ const authApi = apiSlice.injectEndpoints({
           // onSuccess side-effect
           const token = data.token;
 
-          const decodedToken = JSON.parse(base64.decode(token.split(".")[1]));
-          const userData = {
-            email: data.user,
-            userId: decodedToken.userId,
-            isAdmin: decodedToken.isAdmin,
-          };
+          // const decodedToken = JSON.parse(base64.decode(token.split(".")[1]));
+          // const dToken = await jwtDecode(token);
+          // const userData = {
+          //   email: data.user,
+          //   userId: decodedToken.userId,
+          //   isAdmin: decodedToken.isAdmin,
+          // };
 
-          // console.log(userData);
-          const jsonUserData = JSON.stringify(userData);
-          await AsyncStorage.setItem("user", jsonUserData);
+          // console.log("decodedToken", decodedToken);
+          // const jsonUserData = JSON.stringify(userData);
+          // await AsyncStorage.setItem("user", jsonUserData);
           await AsyncStorage.setItem("token", token);
-          dispatch(setUser(userData));
+          const storeToken = await AsyncStorage.getItem("token");
+          // dispatch(setUser(userData));
         } catch (err) {
           // `onError` side-effect
-          console.log("error", err);
+          console.log("error token extract", err);
         }
       },
     }),

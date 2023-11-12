@@ -8,7 +8,7 @@ import { useSignInMutation } from "../../Redux/features/auth/authApi";
 import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getUser } from "../../helpers/userFunctions";
+import { getToken, getUser } from "../../helpers/userFunctions";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -45,13 +45,20 @@ export default function Login() {
     }
   }, [isError, loginError, isSuccess, data]);
 
+  const fetchUserProfile = async () => {
+    const user = await getToken();
+    if (user) {
+      navigation.navigate("UserProfile");
+    } else {
+      console.log("inside console", user);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
-      const user = getUser();
-      if (user) {
-        navigation.navigate("UserProfile");
-      }
-    }, [])
+      console.log("focus effect");
+      fetchUserProfile();
+    })
   );
 
   return (
