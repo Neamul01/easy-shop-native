@@ -7,6 +7,7 @@ import Main from "./Navigators/Main";
 import { Provider } from "react-redux";
 import { store } from "./Redux/app/store";
 import Toast from "react-native-toast-message";
+import "core-js/stable/atob";
 
 export default function App() {
   return (

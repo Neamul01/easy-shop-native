@@ -15,25 +15,22 @@ const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          // onSuccess side-effect
+          //----- onSuccess side-effect
           const token = data.token;
 
-          // const decodedToken = JSON.parse(base64.decode(token.split(".")[1]));
-          // const dToken = await jwtDecode(token);
-          // const userData = {
-          //   email: data.user,
-          //   userId: decodedToken.userId,
-          //   isAdmin: decodedToken.isAdmin,
-          // };
+          const decodedToken = jwtDecode(token);
+          const userData = {
+            email: data.user,
+            userId: decodedToken.userId,
+            isAdmin: decodedToken.isAdmin,
+          };
 
-          // console.log("decodedToken", decodedToken);
-          // const jsonUserData = JSON.stringify(userData);
-          // await AsyncStorage.setItem("user", jsonUserData);
+          const jsonUserData = JSON.stringify(userData);
+          await AsyncStorage.setItem("user", jsonUserData);
           await AsyncStorage.setItem("token", token);
-          const storeToken = await AsyncStorage.getItem("token");
-          // dispatch(setUser(userData));
+          dispatch(setUser(userData));
         } catch (err) {
-          // `onError` side-effect
+          //--------- `onError` side-effect
           console.log("error token extract", err);
         }
       },

@@ -1,27 +1,27 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getToken, getUser, logOut } from "../../helpers/userFunctions";
+import { getUser, logOut } from "../../helpers/userFunctions";
 import { useNavigation } from "@react-navigation/native";
 import { useSingleUserMutation } from "../../Redux/features/users/usersApi";
-import { jwtDecode } from "jwt-decode";
 
 export default function UserProfile() {
-  const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState("");
   const navigation = useNavigation();
-  const [singleUser, { isLoading, data, isSuccess, error }] =
+  const [singleUser, { isLoading, data: userProfile, isSuccess, error }] =
     useSingleUserMutation();
 
   const fetchUserProfile = async () => {
-    const user = await getToken();
-    setUserProfile(user);
-    setUserId(user.userId);
-    if (!user) {
-      navigation.navigate("Login");
-    } else {
-      const extractToken = jwtDecode(user);
-      console.log("inside console", extractToken);
-      // await singleUser(user.userId);
+    try {
+      const user = await getUser();
+      console.log("user", user);
+      setUserId(user.userId);
+      if (!user) {
+        navigation.navigate("Login");
+      } else {
+        await singleUser(user.userId);
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
     }
   };
 
@@ -32,7 +32,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("single user", data);
+      console.log("single user", userProfile);
     }
     if (error) {
       console.log(error);

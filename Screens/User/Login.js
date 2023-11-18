@@ -5,9 +5,6 @@ import Input from "../../Shared/Form/Input";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Error from "../../Shared/Error";
 import { useSignInMutation } from "../../Redux/features/auth/authApi";
-import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getToken, getUser } from "../../helpers/userFunctions";
 
 export default function Login() {
@@ -50,13 +47,13 @@ export default function Login() {
     if (user) {
       navigation.navigate("UserProfile");
     } else {
-      console.log("inside console", user);
+      // console.log("inside console", user);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      console.log("focus effect");
+      // console.log("focus effect");
       fetchUserProfile();
     })
   );
