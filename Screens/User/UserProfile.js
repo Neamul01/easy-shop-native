@@ -13,7 +13,7 @@ export default function UserProfile() {
   const fetchUserProfile = async () => {
     try {
       const user = await getUser();
-      console.log("user", user);
+      // console.log("user", user);
       setUserId(user.userId);
       if (!user) {
         navigation.navigate("Login");
@@ -32,7 +32,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("single user", userProfile);
+      // console.log("single user", userProfile);
     }
     if (error) {
       console.log(error);

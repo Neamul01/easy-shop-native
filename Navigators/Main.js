@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 import HomeNavigator from "./HomeNavigator";
@@ -9,11 +9,35 @@ import { selectCart } from "../Redux/features/cart/cartSlice";
 import { Badge } from "@rneui/themed";
 import UserNavigator from "./UserNavigator";
 import AdminNavigator from "./AdminNavigator";
+import { getUser } from "../helpers/userFunctions";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
   const cart = useSelector(selectCart);
+  const [user, setUser] = useState();
+
+  const fetchUser = async () => {
+    try {
+      const fetchedUser = await getUser();
+      setUser(fetchedUser);
+    } catch (error) {
+      // Handle error if needed
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+      console.log("focus effect in main");
+    }, [])
+  );
+  useEffect(() => {
+    console.log("useEffect called");
+  }, []);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -61,16 +85,18 @@ const Main = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Admin"
-        component={AdminNavigator}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <Icon name="cog" color={color} size={30} />
-          ),
-        }}
-      />
+      {user?.isAdmin ? (
+        <Tab.Screen
+          name="Admin"
+          component={AdminNavigator}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <Icon name="cog" color={color} size={30} />
+            ),
+          }}
+        />
+      ) : null}
       <Tab.Screen
         name="User"
         component={UserNavigator}

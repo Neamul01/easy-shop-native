@@ -15,7 +15,6 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isAdmin = action.payload.isAdmin;
-      // console.log("inside set user", state.isAdmin);
     },
     getUserFromStorage: async (state) => {
       try {
@@ -23,7 +22,7 @@ const authSlice = createSlice({
         const user = jsonUser != null ? JSON.parse(jsonUser) : null;
         state.user = user;
         state.isAdmin = user.isAdmin;
-        console.log(user);
+        // console.log(user);
         return user;
       } catch (error) {
         console.error("Error while getting user from AsyncStorage:", error);

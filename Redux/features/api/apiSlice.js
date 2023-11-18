@@ -9,7 +9,7 @@ export const apiSlice = createApi({
     prepareHeaders: async (headers) => {
       try {
         const token = await AsyncStorage.getItem("token");
-        console.log("inside api call", token);
+        // console.log("inside api call", token);
 
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);

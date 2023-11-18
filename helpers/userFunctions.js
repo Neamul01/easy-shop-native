@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+// import { setUser } from "../Redux/features/auth/authSlice";
 
 export const getUser = async () => {
   const jsonUser = await AsyncStorage.getItem("user");
@@ -13,5 +15,7 @@ export const getToken = async () => {
 export const logOut = async () => {
   await AsyncStorage.removeItem("user");
   await AsyncStorage.removeItem("token");
+  // dispatch(setUser(null));
+
   return true;
 };
