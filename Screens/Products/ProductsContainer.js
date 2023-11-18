@@ -6,6 +6,7 @@ import {
   ScrollView,
   Text,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import ProductList from "./ProductList";
 import { SearchBar } from "@rneui/themed";
@@ -28,9 +29,19 @@ const ProductsContainer = (props) => {
   const [productsCtg, setProductsCtg] = useState([]);
   const [active, setActive] = useState();
   const [initialState, setInitialState] = useState([]);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const { data, isLoading } = useGetProductsQuery();
   const { data: categoriesData, isLoading: categoryIsLoading } =
     useGetCategoriesQuery();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -98,7 +109,11 @@ const ProductsContainer = (props) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={{ marginTop: 10, width: width }}>
         <SearchBar
           placeholderTextColor="white"
