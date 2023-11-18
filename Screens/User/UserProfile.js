@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getUser, logOut } from "../../helpers/userFunctions";
 import { useNavigation } from "@react-navigation/native";
@@ -44,14 +44,40 @@ export default function UserProfile() {
   }, []);
 
   return (
-    <View>
-      <Text>UserProfile</Text>
-      <Text>
-        {userProfile ? userProfile.email : "No user profile available"}
-      </Text>
-      <Button title="Logout" onPress={handleLogOut} />
-    </View>
+    <ScrollView style={styles.container}>
+      <Text style={styles.user}>UserProfile</Text>
+      <View style={{ marginTop: 10 }}>
+        <Text style={styles.text}>
+          Email: {userProfile && userProfile.email}{" "}
+        </Text>
+        <Text style={styles.text}>
+          Phone: {userProfile && userProfile.phone}{" "}
+        </Text>
+      </View>
+      <View style={styles.submitButton}>
+        <Button title="Logout" onPress={handleLogOut} />
+      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 50,
+    paddingHorizontal: 5,
+    alignSelf: "center",
+  },
+  user: {
+    fontSize: 30,
+    alignSelf: "center",
+  },
+  text: {
+    marginTop: 10,
+  },
+  submitButton: {
+    marginTop: 40,
+    width: "50%",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+});
