@@ -45,7 +45,7 @@ export default function UserProfile() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.user}>UserProfile</Text>
+      <Text style={styles.user}>{userProfile && userProfile.name}</Text>
       <View style={{ marginTop: 10 }}>
         <Text style={styles.text}>
           Email: {userProfile && userProfile.email}{" "}

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { selectCart } from "../Redux/features/cart/cartSlice";
 import { Badge } from "@rneui/themed";
 import UserNavigator from "./UserNavigator";
+import AdminNavigator from "./AdminNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,8 +63,9 @@ const Main = () => {
       />
       <Tab.Screen
         name="Admin"
-        component={HomeNavigator}
+        component={AdminNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Icon name="cog" color={color} size={30} />
           ),
