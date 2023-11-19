@@ -11,12 +11,15 @@ import UserNavigator from "./UserNavigator";
 import AdminNavigator from "./AdminNavigator";
 import { getUser } from "../helpers/userFunctions";
 import { useFocusEffect } from "@react-navigation/native";
+import { selectUser } from "../Redux/features/auth/authSlice";
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
   const cart = useSelector(selectCart);
   const [user, setUser] = useState();
+  const stateUser = useSelector(selectUser);
+  // console.log
 
   const fetchUser = async () => {
     try {
@@ -85,7 +88,7 @@ const Main = () => {
           ),
         }}
       />
-      {user?.isAdmin ? (
+      {user?.isAdmin && stateUser?.isAdmin ? (
         <Tab.Screen
           name="Admin"
           component={AdminNavigator}

@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import { getUser, logOut } from "../../helpers/userFunctions";
 import { useNavigation } from "@react-navigation/native";
 import { useSingleUserMutation } from "../../Redux/features/users/usersApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../Redux/features/auth/authSlice";
 
 export default function UserProfile() {
-  const [userId, setUserId] = useState("");
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const [singleUser, { isLoading, data: userProfile, isSuccess, error }] =
     useSingleUserMutation();
 
@@ -14,7 +17,6 @@ export default function UserProfile() {
     try {
       const user = await getUser();
       // console.log("user", user);
-      setUserId(user.userId);
       if (!user) {
         navigation.navigate("Login");
       } else {
@@ -27,6 +29,7 @@ export default function UserProfile() {
 
   const handleLogOut = async () => {
     await logOut();
+    dispatch(setUser({}));
     navigation.navigate("Login");
   };
 
