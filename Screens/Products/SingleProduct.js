@@ -1,20 +1,36 @@
 import { Image, ScrollView, StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Button, ButtonGroup, Text } from "@rneui/themed";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/features/cart/cartSlice";
 import Toast from "react-native-toast-message";
 import EasyButton from "../../Shared/StyledComponent/EasyButton";
+import TrafficLight from "../../Shared/StyledComponent/TrafficLight";
 
 const SingleProduct = () => {
   const router = useRoute();
   const [item, setItem] = useState(router.params.item);
-  const [availability, setAvailability] = useState("");
+  const [availability, setAvailability] = useState(null);
+  const [availabilityText, setAvailabilityText] = useState("");
 
   const dispatch = useDispatch();
+  const route = useRoute();
 
-  //   console.log(item.image);
+  useEffect(() => {
+    if (route.params.item.countInStock == 0) {
+      setAvailability(<TrafficLight unavailable></TrafficLight>);
+      setAvailabilityText("Unavailable");
+    } else if (route.params.item.countInStock < 5) {
+      setAvailability(<TrafficLight limited></TrafficLight>);
+      setAvailabilityText("Limited Stock");
+    } else {
+      setAvailability(<TrafficLight available></TrafficLight>);
+      setAvailabilityText("Available");
+    }
+  }, [route]);
+
+  // console.log(route.params.item.countInStock);
 
   return (
     <View style={styles.container}>
@@ -36,7 +52,16 @@ const SingleProduct = () => {
           </Text>
           <Text style={styles.contentText}>{item.brand}</Text>
         </View>
-        {/* TODO: Description, Rich Description and Availability */}
+
+        <View style={styles.availabilityContainer}>
+          <View style={styles.availability}>
+            <Text style={{ marginRight: 10 }}>
+              Availability: {availabilityText}
+            </Text>
+            {availability}
+          </View>
+          <Text>{item.description}</Text>
+        </View>
       </ScrollView>
       <View style={styles.bottomContainer}>
         <Text style={styles.price}>${item.price}</Text>
@@ -111,5 +136,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     margin: 20,
     color: "red",
+  },
+  availabilityContainer: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  availability: {
+    flexDirection: "row",
+    marginBottom: 10,
   },
 });
