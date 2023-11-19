@@ -34,12 +34,8 @@ const Main = () => {
   useFocusEffect(
     useCallback(() => {
       fetchUser();
-      console.log("focus effect in main");
     }, [])
   );
-  useEffect(() => {
-    console.log("useEffect called");
-  }, []);
 
   return (
     <Tab.Navigator
@@ -88,7 +84,7 @@ const Main = () => {
           ),
         }}
       />
-      {user?.isAdmin && stateUser?.isAdmin ? (
+      {user?.isAdmin || stateUser?.isAdmin ? (
         <Tab.Screen
           name="Admin"
           component={AdminNavigator}
