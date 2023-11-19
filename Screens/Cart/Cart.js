@@ -6,16 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearCart,
   removeFromCart,
   selectCart,
 } from "../../Redux/features/cart/cartSlice";
-import { Avatar, Button, ListItem } from "@rneui/themed";
+import { Avatar, ListItem } from "@rneui/themed";
 import Entypo from "react-native-vector-icons/Entypo";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 const { height, width } = Dimensions.get("window");
 
@@ -80,16 +81,16 @@ const Cart = (props) => {
           </ScrollView>
           <View style={styles.bottomContainer}>
             <Text style={styles.priceText}>${total}</Text>
-            <Button
-              onPress={() => dispatch(clearCart())}
-              title={"Clear Cart"}
-              color={"error"}
-            />
-            <Button
+            <EasyButton danger medium onPress={() => dispatch(clearCart())}>
+              <Text style={{ color: "white" }}>Clear Cart</Text>
+            </EasyButton>
+            <EasyButton
+              primary
+              medium
               onPress={() => navigator.navigate("Checkout")}
-              title={"Checkout"}
-              color={"success"}
-            />
+            >
+              <Text style={{ color: "white" }}>Checkout</Text>
+            </EasyButton>
           </View>
         </>
       ) : (
@@ -128,6 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     paddingHorizontal: 10,
+    alignItems: "center",
   },
   priceText: {
     fontSize: 20,

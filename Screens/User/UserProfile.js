@@ -4,7 +4,8 @@ import { getUser, logOut } from "../../helpers/userFunctions";
 import { useNavigation } from "@react-navigation/native";
 import { useSingleUserMutation } from "../../Redux/features/users/usersApi";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../Redux/features/auth/authSlice";
+import { resetUser, setUser } from "../../Redux/features/auth/authSlice";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 export default function UserProfile() {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ export default function UserProfile() {
 
   const handleLogOut = async () => {
     await logOut();
-    dispatch(setUser({}));
+    dispatch(resetUser());
     navigation.navigate("Login");
   };
 
@@ -58,7 +59,9 @@ export default function UserProfile() {
         </Text>
       </View>
       <View style={styles.submitButton}>
-        <Button title="Logout" onPress={handleLogOut} />
+        <EasyButton primary large onPress={handleLogOut}>
+          <Text style={{ color: "white" }}>LogOut</Text>
+        </EasyButton>
       </View>
     </ScrollView>
   );
@@ -79,7 +82,6 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 40,
-    width: "50%",
     marginLeft: "auto",
     marginRight: "auto",
   },

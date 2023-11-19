@@ -1,12 +1,13 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import FormContainer from "../../Shared/Form/FormContainer";
 import Input from "../../Shared/Form/Input";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Error from "../../Shared/Error";
 import { useSignInMutation } from "../../Redux/features/auth/authApi";
-import { getToken, getUser } from "../../helpers/userFunctions";
+import { getToken } from "../../helpers/userFunctions";
 import Toast from "react-native-toast-message";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -78,7 +79,9 @@ export default function Login() {
       />
       <View style={styles.buttonGroup}>
         {error ? <Error message={error} /> : null}
-        <Button title="Login" onPress={handleLogin} />
+        <EasyButton primary large onPress={handleLogin}>
+          <Text style={{ color: "white", fontSize: 18 }}>LogIn</Text>
+        </EasyButton>
       </View>
       <View style={[styles.buttonGroup, { marginTop: 40 }]}>
         <Text style={styles.middleText}>Don't have an account yet?</Text>

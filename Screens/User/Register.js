@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useDispatch } from "react-redux";
 import { useSignUpMutation } from "../../Redux/features/auth/authApi";
 import Toast from "react-native-toast-message";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -96,7 +97,9 @@ export default function Register() {
         />
         <View style={styles.buttonGroup}>
           {error ? <Error message={error} /> : null}
-          <Button title="Register" onPress={handleSubmit} />
+          <EasyButton primary large onPress={handleSubmit}>
+            <Text style={{ color: "white", fontSize: 18 }}>Register</Text>
+          </EasyButton>
         </View>
         <View style={[styles.buttonGroup, { marginTop: 40 }]}>
           <Text style={styles.middleText}>Already have an account?</Text>

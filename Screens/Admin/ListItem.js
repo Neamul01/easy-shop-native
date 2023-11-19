@@ -4,7 +4,6 @@ import {
   Modal,
   StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -12,7 +11,6 @@ import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import EasyButton from "../../Shared/StyledComponent/EasyButton";
-// import { Button } from "@rneui/themed";
 
 const { width } = Dimensions.get("window");
 

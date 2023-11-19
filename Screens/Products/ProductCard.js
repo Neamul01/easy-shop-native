@@ -1,15 +1,9 @@
-import {
-  Button,
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCart } from "../../Redux/features/cart/cartSlice";
 import Toast from "react-native-toast-message";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 const { width } = Dimensions.get("window");
 
@@ -40,9 +34,9 @@ const ProductCard = (props) => {
 
       {countInStock > 0 ? (
         <View style={{ marginBottom: 60 }}>
-          <Button
-            title="Add"
-            color={"green"}
+          <EasyButton
+            primary
+            medium
             onPress={() => {
               dispatch(addToCart(props));
               Toast.show({
@@ -51,7 +45,9 @@ const ProductCard = (props) => {
                 text2: "Go to cart to complete order",
               });
             }}
-          />
+          >
+            <Text style={{ color: "white" }}>Add</Text>
+          </EasyButton>
         </View>
       ) : (
         <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>

@@ -5,6 +5,7 @@ import { Button, ButtonGroup, Text } from "@rneui/themed";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/features/cart/cartSlice";
 import Toast from "react-native-toast-message";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
 
 const SingleProduct = () => {
   const router = useRoute();
@@ -39,12 +40,9 @@ const SingleProduct = () => {
       </ScrollView>
       <View style={styles.bottomContainer}>
         <Text style={styles.price}>${item.price}</Text>
-        <Button
-          backgroundColor="black"
-          containerStyle={{ height: "100%", marginTop: 15 }}
-          title={"Add"}
-          type="clear"
-          size="lg"
+        <EasyButton
+          medium
+          primary
           onPress={() => {
             dispatch(addToCart(item));
             Toast.show({
@@ -53,7 +51,17 @@ const SingleProduct = () => {
               text2: "Go to cart to complete order",
             });
           }}
-        />
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 20,
+              alignSelf: "center",
+            }}
+          >
+            Add
+          </Text>
+        </EasyButton>
       </View>
     </View>
   );

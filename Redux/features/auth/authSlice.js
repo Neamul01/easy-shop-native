@@ -16,6 +16,9 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAdmin = action.payload.isAdmin;
     },
+    resetUser: (state, action) => {
+      state.user = null;
+    },
     getUserFromStorage: async (state) => {
       try {
         const jsonUser = await AsyncStorage.getItem("user");
@@ -45,6 +48,7 @@ export const selectIsAdmin = (state) => state.auth.isAdmin;
 export const {
   logOut,
   setUser,
+  resetUser,
   getUserFromStorage,
   userIsAdmin,
   isAuthenticated,
