@@ -46,7 +46,7 @@ export default function Products() {
     }
     setProductFilter(
       productsList.filter((i) =>
-        i.name?.toLowerCase().includes(text?.toLowerCase())
+        i?.name?.toLowerCase().includes(text?.toLowerCase())
       )
     );
   };

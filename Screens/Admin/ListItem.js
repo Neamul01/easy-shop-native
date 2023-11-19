@@ -11,7 +11,8 @@ import {
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "@rneui/themed";
+import EasyButton from "../../Shared/StyledComponent/EasyButton";
+// import { Button } from "@rneui/themed";
 
 const { width } = Dimensions.get("window");
 
@@ -42,21 +43,25 @@ export default function ListItem(props) {
             >
               <Icon name="close" size={20} />
             </TouchableOpacity>
-            <Button
-              title="Edit"
-              onPress={() => [
-                navigation.navigate("ProductForm"),
-                setModalVisible(false),
-              ]}
-              containerStyle={styles.modalButton}
-            />
-            <Button
+            <EasyButton
+              medium
+              secondary
+              onPress={() =>
+                navigation.navigate("ProductForm", { item: props })
+              }
+            >
+              <Text style={styles.textStyle}>Edit</Text>
+            </EasyButton>
+            <EasyButton medium danger>
+              <Text style={styles.textStyle}>Delete</Text>
+            </EasyButton>
+            {/* <Button
               containerStyle={styles.modalButton}
               title="Delete"
               onPress={() => [
                 // Delete Here
               ]}
-            />
+            /> */}
           </View>
         </View>
       </Modal>
@@ -139,7 +144,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 10,
   },
-  modalButton: {
-    width: "100%",
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
