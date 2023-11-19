@@ -36,17 +36,23 @@ const ListHeader = () => {
 
 export default function Products() {
   const [productFilter, setProductFilter] = useState();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState();
 
   const { data: productsList, isLoading } = useGetProductsQuery();
 
   const searchProduct = (text) => {
-    // openList();
-    // setSearch(text);
-    // setFilteredProduct(
-    //   products.filter((i) => i.name.toLowerCase().includes(text.toLowerCase()))
-    // );
+    if (text === "") {
+      setProductFilter(productsList);
+    }
+    setProductFilter(
+      productsList.filter((i) =>
+        i.name?.toLowerCase().includes(text?.toLowerCase())
+      )
+    );
   };
+  useEffect(() => {
+    searchProduct(search);
+  }, [search]);
 
   useEffect(() => {
     setProductFilter(productsList);
@@ -66,7 +72,7 @@ export default function Products() {
           placeholder="Type Here..."
           // onBlur={onBlur}
 
-          onChangeText={searchProduct}
+          onChangeText={(text) => setSearch(text)}
           value={search}
           onClear={() => {
             setFocus(false);
@@ -76,7 +82,7 @@ export default function Products() {
 
       {isLoading ? (
         <View style={styles.spinner}>
-          <ActivityIndicator size={"large"} color={"red"} />{" "}
+          <ActivityIndicator size={"large"} color={"red"} />
         </View>
       ) : (
         <FlatList
